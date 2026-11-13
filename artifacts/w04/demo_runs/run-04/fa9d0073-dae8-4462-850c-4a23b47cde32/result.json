@@ -1,0 +1,62 @@
+{
+  "status": "ok",
+  "intent": {
+    "metrics": [
+      "first_buyer_count"
+    ],
+    "start": "2026-08-01",
+    "end": "2026-09-01",
+    "group_by": [],
+    "filters": []
+  },
+  "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN valid_order_rank = 1 THEN member_id END) AS first_buyer_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+  "columns": [
+    "first_buyer_count"
+  ],
+  "rows": [
+    [
+      3362
+    ]
+  ],
+  "seconds": 0.094,
+  "units": {
+    "first_buyer_count": "count"
+  },
+  "data_version": "qinghe-w04-v1.1",
+  "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+  "catalog_sha256": "558fbaf5bed149ae6f21e43424f14a432fe82e75d95d551aa9c67b2ad41e86d0",
+  "coverage_notes": {
+    "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+    "time_range": {
+      "start": "2024-09-01",
+      "end_exclusive": "2026-09-01"
+    },
+    "quarantined": {
+      "member": 0,
+      "order": 252,
+      "card": 299,
+      "shop": 0
+    },
+    "quarantine_reasons": {
+      "card:UNSUPPORTED_CARD_TYPE": 299,
+      "order:REFUND_EXCEEDS_PAID": 84,
+      "order:UNLINKED_ACCOUNT": 168
+    },
+    "deduplicated": {
+      "member": 0,
+      "order": 336,
+      "card": 0,
+      "shop": 0
+    }
+  },
+  "answer": "2026年8月，在青禾当前客户数据范围内，首次购买会员账户数为 3362 个。该口径统计的是测试覆盖期内首次有效订单落在2026年8月的CRM会员账户，并非终身首次购买；老收银系统的会员消费未导出，已注销会员无法关联的订单也已隔离未纳入。结果未按门店或地区拆分。",
+  "question": "2026年8月有多少会员是第一次在青禾购买？",
+  "trace_id": "fa9d0073-dae8-4462-850c-4a23b47cde32",
+  "elapsed_seconds": 11.297,
+  "model_usage": {
+    "prompt_tokens": 24744,
+    "completion_tokens": 1122,
+    "total_tokens": 25866
+  },
+  "model_calls_with_usage": 2
+}

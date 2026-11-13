@@ -1,0 +1,87 @@
+{
+  "id": "qinghe-w04-v1.1",
+  "contract_version": "w04-data-0.1.0",
+  "coverage": [
+    "2024-09-01",
+    "2026-09-01"
+  ],
+  "reference_date": "2026-09-01",
+  "timezone": "Asia/Shanghai",
+  "source_sha256": {
+    "crm_card_export.csv": "1e2539c564d1e007f3aaaa11b1d16de9a50a63858fed5dc09537089321b5e424",
+    "crm_member_export.csv": "dfe1e842c80f947bf85b0b356073e6eb0c9cd7385072fbc731452d7a60ea8913",
+    "crm_order_export.csv": "e95a5a467f044ef6d059014a71dcd39edc178d88e8ea06f87f2ecb1a40040052",
+    "crm_shop.csv": "bcef4a1edb12f18695b545fef64b7da2c7504f3cfc535937f08c7380a5f00045",
+    "小林工作账_勿扰名单.csv": "8460b149d9208bfad5d90f2299ecc49c69c56d4970e91fb066bec63d9889af8d",
+    "小林工作账_回访名单.csv": "3dd64d64b5e9524bd0fbd23736b4f32f6a234b0acf47d0c5b469906a2b0b346e"
+  },
+  "sha256": {
+    "cards.csv": "c3623778cd5cea7082b10d2cd6ac94a6442059fde87f334cf4042b7a74400520",
+    "member_notes.csv": "33283a5aac6d14ca173f19646ae952a9aff7a0503b9109cf80fd303ba5f9d0a5",
+    "member_tags.csv": "0a7525b92f7731eb53d0e1e5a15609b88bb3f34c47649593039f731a58e8a206",
+    "members.csv": "6ca27bea580099f34024b93c64bac0402d9b672d29894b2effd2d57532dd839c",
+    "orders.csv": "46bf19e849043c61d64c3451b2caf3a36f4f68f7106ff3963829bae33abed202",
+    "quarantine.csv": "4c4abd57dc45fc78861c1ea4f3788a6c27d55cefd80733d4855db79fb1a5fc4a",
+    "stores.csv": "244fd3e72d35f3d664a80cb6473776203958bcadb747e181ba32b1b81223cae3"
+  },
+  "counts": {
+    "members": 119754,
+    "orders": 167665,
+    "stores": 403,
+    "cards": 16349,
+    "member_tags": 56215,
+    "member_notes": 8749,
+    "quarantine": 551
+  },
+  "record_counts": {
+    "member": {
+      "read": 119754,
+      "accepted": 119754,
+      "quarantined": 0,
+      "deduplicated": 0
+    },
+    "order": {
+      "read": 168253,
+      "accepted": 167665,
+      "quarantined": 252,
+      "deduplicated": 336
+    },
+    "card": {
+      "read": 16648,
+      "accepted": 16349,
+      "quarantined": 299,
+      "deduplicated": 0
+    },
+    "shop": {
+      "read": 403,
+      "accepted": 403,
+      "quarantined": 0,
+      "deduplicated": 0
+    }
+  },
+  "coverage_notes": {
+    "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+    "time_range": {
+      "start": "2024-09-01",
+      "end_exclusive": "2026-09-01"
+    },
+    "quarantined": {
+      "member": 0,
+      "order": 252,
+      "card": 299,
+      "shop": 0
+    },
+    "quarantine_reasons": {
+      "card:UNSUPPORTED_CARD_TYPE": 299,
+      "order:REFUND_EXCEEDS_PAID": 84,
+      "order:UNLINKED_ACCOUNT": 168
+    },
+    "deduplicated": {
+      "member": 0,
+      "order": 336,
+      "card": 0,
+      "shop": 0
+    }
+  },
+  "library_sha256": "558fbaf5bed149ae6f21e43424f14a432fe82e75d95d551aa9c67b2ad41e86d0"
+}

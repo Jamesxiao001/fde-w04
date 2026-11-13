@@ -1,0 +1,108 @@
+[
+  {
+    "source_file": "crm_order_export.csv",
+    "source_row": 1,
+    "raw_record": {
+      "ord_no": "O20240901000001",
+      "hy_id": "QH10023333",
+      "shop_cd": "6244",
+      "ord_tm": "2024-09-01 00:24:26",
+      "ord_stat": "全额退款",
+      "amt_total": "61.01",
+      "amt_pay": "54.91",
+      "amt_rfd": "54.91",
+      "qty": "2",
+      "ch": "小程序"
+    },
+    "cleaned_orders_record": [
+      1
+    ],
+    "cleaned_orders_row": {
+      "order_id": "O20240901000001",
+      "member_id": "QH10023333",
+      "store_id": "6244",
+      "ordered_at": "2024-09-01",
+      "status": "paid",
+      "gross_cents": "6101",
+      "paid_cents": "5491",
+      "refund_cents": "5491",
+      "quantity": "2",
+      "channel": "小程序"
+    },
+    "quarantine_record": [],
+    "database": {
+      "project-a": {
+        "raw_orders": [
+          [
+            "O20240901000001",
+            "QH10023333",
+            "6244",
+            "2024-09-01",
+            "paid",
+            6101,
+            5491,
+            5491
+          ]
+        ],
+        "raw_quarantine": []
+      },
+      "project-b": {
+        "raw_orders": [
+          [
+            "O20240901000001",
+            "QH10023333",
+            "6244",
+            "2024-09-01",
+            "paid",
+            6101,
+            5491,
+            5491
+          ]
+        ],
+        "raw_quarantine": []
+      }
+    }
+  },
+  {
+    "source_file": "crm_order_export.csv",
+    "source_row": 2851,
+    "raw_record": {
+      "ord_no": "O20240919000094",
+      "hy_id": "QH10010311",
+      "shop_cd": "2472",
+      "ord_tm": "2024-09-19 18:14:32",
+      "ord_stat": "部分退款",
+      "amt_total": "40.87",
+      "amt_pay": "26.78",
+      "amt_rfd": "34.81",
+      "qty": "1",
+      "ch": "门店"
+    },
+    "cleaned_orders_record": [],
+    "cleaned_orders_row": null,
+    "quarantine_record": [
+      [
+        1,
+        "REFUND_EXCEEDS_PAID"
+      ]
+    ],
+    "database": {
+      "project-a": {
+        "raw_orders": [],
+        "raw_quarantine": [
+          [
+            "REFUND_EXCEEDS_PAID"
+          ]
+        ]
+      },
+      "project-b": {
+        "raw_orders": [],
+        "raw_quarantine": [
+          [
+            "REFUND_EXCEEDS_PAID"
+          ]
+        ]
+      }
+    }
+  }
+]

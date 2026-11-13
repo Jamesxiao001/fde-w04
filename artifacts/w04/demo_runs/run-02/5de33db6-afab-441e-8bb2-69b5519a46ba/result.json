@@ -1,0 +1,110 @@
+{
+  "status": "ok",
+  "intent": {
+    "metrics": [
+      "monthly_repeat_rate"
+    ],
+    "start": "2025-09-01",
+    "end": "2026-09-01",
+    "group_by": [
+      "metric_time__month"
+    ],
+    "filters": []
+  },
+  "sql": "SELECT\n  metric_time__month\n  , CAST(monthly_repeat_buyer_count AS DOUBLE) / CAST(NULLIF(monthly_buyer_count, 0) AS DOUBLE) AS monthly_repeat_rate\nFROM (\n  SELECT\n    metric_time__month\n    , COUNT(DISTINCT __monthly_repeat_buyer_count) AS monthly_repeat_buyer_count\n    , COUNT(DISTINCT __monthly_buyer_count) AS monthly_buyer_count\n  FROM (\n    SELECT\n      DATE_TRUNC('month', stat_period_start) AS metric_time__month\n      , member_id AS __monthly_buyer_count\n      , CASE WHEN member_month_valid_order_count >= 2 THEN member_id END AS __monthly_repeat_buyer_count\n    FROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\n    WHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2025-09-01' AND '2026-08-31'\n  ) subq_6\n  GROUP BY\n    metric_time__month\n) subq_8",
+  "columns": [
+    "metric_time__month",
+    "monthly_repeat_rate"
+  ],
+  "rows": [
+    [
+      "2026-08-01 00:00:00",
+      0.11803398501735794
+    ],
+    [
+      "2025-11-01 00:00:00",
+      0.1533457249070632
+    ],
+    [
+      "2026-04-01 00:00:00",
+      0.1436943781202518
+    ],
+    [
+      "2025-10-01 00:00:00",
+      0.15957978989494748
+    ],
+    [
+      "2026-05-01 00:00:00",
+      0.13044342811692186
+    ],
+    [
+      "2025-12-01 00:00:00",
+      0.15120113047574188
+    ],
+    [
+      "2026-07-01 00:00:00",
+      0.1136986301369863
+    ],
+    [
+      "2026-03-01 00:00:00",
+      0.1427061310782241
+    ],
+    [
+      "2025-09-01 00:00:00",
+      0.16725978647686832
+    ],
+    [
+      "2026-06-01 00:00:00",
+      0.12929593163663386
+    ],
+    [
+      "2026-01-01 00:00:00",
+      0.14604966139954853
+    ],
+    [
+      "2026-02-01 00:00:00",
+      0.14084223252065284
+    ]
+  ],
+  "seconds": 0.156,
+  "units": {
+    "monthly_repeat_rate": "ratio"
+  },
+  "data_version": "qinghe-w04-v1.1",
+  "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+  "catalog_sha256": "558fbaf5bed149ae6f21e43424f14a432fe82e75d95d551aa9c67b2ad41e86d0",
+  "coverage_notes": {
+    "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+    "time_range": {
+      "start": "2024-09-01",
+      "end_exclusive": "2026-09-01"
+    },
+    "quarantined": {
+      "member": 0,
+      "order": 252,
+      "card": 299,
+      "shop": 0
+    },
+    "quarantine_reasons": {
+      "card:UNSUPPORTED_CARD_TYPE": 299,
+      "order:REFUND_EXCEEDS_PAID": 84,
+      "order:UNLINKED_ACCOUNT": 168
+    },
+    "deduplicated": {
+      "member": 0,
+      "order": 336,
+      "card": 0,
+      "shop": 0
+    }
+  },
+  "answer": "统计范围为2025年9月至2026年8月，共12个完整自然月；按自然月分别计算月内复购率，口径为“同一自然月内复购的会员账户数 ÷ 该月有购买的会员账户数”，采用全门店口径。各月结果如下：2025年9月16.73%，10月15.96%，11月15.33%，12月15.12%；2026年1月14.60%，2月14.08%，3月14.27%，4月14.37%，5月13.04%，6月12.93%，7月11.37%，8月11.80%。限制说明：本次仅覆盖新CRM导出的会员、订单、会员卡和门店数据；门店老收银系统的会员消费未导出，已注销会员的订单无法关联、已隔离未纳入，因此未覆盖部分不能视为0。",
+  "question": "2025年9月到2026年8月，每个月的月内复购率分别是多少？",
+  "trace_id": "5de33db6-afab-441e-8bb2-69b5519a46ba",
+  "elapsed_seconds": 12.125,
+  "model_usage": {
+    "prompt_tokens": 24943,
+    "completion_tokens": 1305,
+    "total_tokens": 26248
+  },
+  "model_calls_with_usage": 2
+}

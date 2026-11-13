@@ -1,0 +1,24 @@
+{
+  "status": "unsupported",
+  "reason": "现有复购率指标仅支持完整自然月、全门店口径，不能按季度汇总，因此无法直接判断2025年7月到2026年6月四个季度是否连续下滑；可按月展示月内复购率。",
+  "intent": {
+    "status": "unsupported",
+    "reason": "现有复购率指标仅支持完整自然月、全门店口径，不能按季度汇总，因此无法直接判断2025年7月到2026年6月四个季度是否连续下滑；可按月展示月内复购率。",
+    "metrics": [
+      "monthly_repeat_rate"
+    ],
+    "start": "2025-07-01",
+    "end": "2026-07-01",
+    "group_by": [],
+    "filters": []
+  },
+  "question": "2025年7月到2026年6月这四个季度，青禾会员的复购率是不是连续下滑？",
+  "trace_id": "e611cb85-6076-433f-a0dd-e464acb83b7a",
+  "elapsed_seconds": 22.766,
+  "model_usage": {
+    "prompt_tokens": 22488,
+    "completion_tokens": 3619,
+    "total_tokens": 26107
+  },
+  "model_calls_with_usage": 1
+}

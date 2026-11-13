@@ -1,0 +1,62 @@
+{
+  "status": "ok",
+  "intent": {
+    "metrics": [
+      "monthly_repeat_rate"
+    ],
+    "start": "2026-08-01",
+    "end": "2026-09-01",
+    "group_by": [],
+    "filters": []
+  },
+  "sql": "SELECT\n  CAST(COUNT(DISTINCT CASE WHEN member_month_valid_order_count >= 2 THEN member_id END) AS DOUBLE) / CAST(NULLIF(COUNT(DISTINCT member_id), 0) AS DOUBLE) AS monthly_repeat_rate\nFROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\nWHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2026-08-01' AND '2026-08-31'",
+  "columns": [
+    "monthly_repeat_rate"
+  ],
+  "rows": [
+    [
+      0.11803398501735794
+    ]
+  ],
+  "seconds": 0.125,
+  "units": {
+    "monthly_repeat_rate": "ratio"
+  },
+  "data_version": "qinghe-w04-v1.1",
+  "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+  "catalog_sha256": "558fbaf5bed149ae6f21e43424f14a432fe82e75d95d551aa9c67b2ad41e86d0",
+  "coverage_notes": {
+    "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+    "time_range": {
+      "start": "2024-09-01",
+      "end_exclusive": "2026-09-01"
+    },
+    "quarantined": {
+      "member": 0,
+      "order": 252,
+      "card": 299,
+      "shop": 0
+    },
+    "quarantine_reasons": {
+      "card:UNSUPPORTED_CARD_TYPE": 299,
+      "order:REFUND_EXCEEDS_PAID": 84,
+      "order:UNLINKED_ACCOUNT": 168
+    },
+    "deduplicated": {
+      "member": 0,
+      "order": 336,
+      "card": 0,
+      "shop": 0
+    }
+  },
+  "answer": "2026年8月月内复购率为11.80%。口径为同一自然月内复购的会员账户数除以该月有购买的会员账户数，按整月、全门店统计，统计单位为CRM会员账户。该结果基于青禾当前已加载数据；门店老收银系统的会员消费未导出，已注销会员相关订单及员工卡按规则隔离未纳入，未覆盖部分不能视为0。",
+  "question": "2026年8月的月内复购率是多少？",
+  "trace_id": "bc9213f3-bf8c-42a9-9b7b-9a8aa8a3d627",
+  "elapsed_seconds": 8.969,
+  "model_usage": {
+    "prompt_tokens": 24633,
+    "completion_tokens": 619,
+    "total_tokens": 25252
+  },
+  "model_calls_with_usage": 2
+}

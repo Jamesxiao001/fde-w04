@@ -1,0 +1,60 @@
+# 青禾 W04 清洗规则：由 customer/w04/solution.py 的 adapt() 读取执行。
+# 每条规则写明依据：剖析报告 artifacts/w04/profile_report.json（数据看到的）、
+# 访谈导出 artifacts/w04/interviews/（MSG 编号，访谈听来的）。没有依据的不写成规则。
+contract_version: w04-0.1.0
+data_version: qinghe-w04-v1.1
+
+tag_cleaning:
+  # 剖析：tag 字段实际用了英文逗号、中文逗号、分号、斜杠、空格五种分隔符（字典只写“逗号分隔”）
+  delimiters: [',', '，', ';', '；', '/', ' ']
+  # 小林 MSG-05479：正式标签 16 个 = 字典附录 12 个 + 2025 年新增 4 个
+  legal_tags_source: tags.txt
+  hyphenated_tag_handling: 连字符不是备注标记；先对照 tags.txt 整段匹配，母婴-0到3岁、母婴-3到6岁按完整标签保留；“联系状态-…”等不在清单内的带连字符内容作为备注（小林 MSG-05477）
+  unknown_tag_handling: 清单外内容不进标签表、不删除，作为备注完整保留到 member_notes（含原文和来源记录序号），未经确认的疑似标签在诊断报告列待核
+  note_extraction: 拆分后不在 tags.txt 的片段即备注；相邻备注片段只在中文逗号处合并为一条完整备注（中文逗号也出现在整句备注里，如“卡务，6月办的卡，店长知道。”），但前一段以句号结尾、或后一段是新的“关键词-”开头（如“客户关系-”）时另起一条；其他分隔符处各成一条；整字段为空值写法（空、NULL、-、无）时不产生标签和备注
+
+invalid_values:
+  - source_fields: [nm, mobile, birth, reg_dev]
+    values: ['', 'NULL', '-', '无']
+    action: keep_raw
+    reason: 姓名、手机号、生日、设备号不进查询库，原始文件逐字节保留，不清洗
+  - source_fields: [tag]
+    values: ['', 'NULL', '-', '无']
+    action: treat_as_missing
+    reason: 整个字段为空值写法时视为没有标签和备注（剖析：四种空值写法共 77,049 条）
+  - source_fields: [stop_dt]
+    values: ['', 'NULL', '-', '无']
+    action: treat_as_missing
+    reason: 提前终止日期为空值写法时视为未提前终止，写为空（剖析：四种写法共 15,754 条）
+
+abnormal_records:
+  # ---- 格式规范化（录入写法问题，改格式不改含义，原值留在原始文件）
+  - {rule_id: money_yuan, condition: 'amt_total amt_pay amt_rfd pay_amt 为元两位小数', action: normalize, reason_code: YUAN_TO_CENTS, evidence: '剖析：4 个金额字段全部带两位小数；老周 MSG-05460 确认实际单位为元，字典整数分是早期设计未更新。Decimal 元×100 转整数分，非整分则隔离 INVALID_MONEY'}
+  - {rule_id: date_formats, condition: 'join_dt 接受 YYYY-MM-DD、YYYY/MM/DD、YYYYMMDD', action: normalize, reason_code: DATE_NORMALIZED, evidence: '剖析：join_dt 有 1,823 条 YYYY/MM/DD、1,790 条 YYYYMMDD'}
+  - {rule_id: store_code, condition: '门店编码全角转半角、去首尾空格、字母转大写', action: normalize, reason_code: STORE_CODE_NORMALIZED, evidence: '剖析：订单 shop_cd 首尾空格 624、全角 237、小写 1；规范化后全部能关联门店表；老周 MSG-05504 认可该做法，来历待核'}
+  # ---- 字段映射（字典过时：按实际取值映射）
+  - {rule_id: member_status, condition: 'stat 0=未激活 1=活跃 2=冻结 3=注销', action: normalize, reason_code: STATUS_MAPPED, evidence: '剖析：stat=0 共 22,296 条字典未列；老周 MSG-05462 确认 0 为未激活。映射表外的取值隔离 UNSUPPORTED_ACCOUNT_STATUS'}
+  - {rule_id: member_channel, condition: 'src_ch in [门店, 小程序, 商城, 系统导入]', action: normalize, reason_code: CHANNEL_MAPPED, evidence: '剖析：系统导入 39,917 条字典未列；老周 MSG-05464 确认为系统批量建档；registered_at 取 join_dt（入会日期），created_at 取 create_tm 日期（新 CRM 建档时间）'}
+  - {rule_id: member_tier, condition: 'lv 1=普通 2=银卡 3=金卡', action: normalize, reason_code: TIER_MAPPED, evidence: '剖析：lv 实际存文字普通、银卡、金卡（字典写代码 1/2/3）。文字原样保留，代码按字典转文字，其他隔离 UNSUPPORTED_TIER'}
+  - {rule_id: order_status, condition: 'ord_stat 已取消=cancelled；已支付、已完成、部分退款、全额退款=paid', action: normalize, reason_code: ORDER_STATUS_MAPPED, evidence: 'W03 指标库只认 paid/cancelled（order_facts.sql:8、metrics.yml）；剖析：状态与金额组合一致，退款由 refund_cents 区分。映射表外的状态隔离 UNSUPPORTED_ORDER_STATUS'}
+  - {rule_id: order_channel, condition: 'ch in [门店, 小程序, 商城]', action: normalize, reason_code: CHANNEL_MAPPED, evidence: '剖析：渠道只有这三种，与字典一致；其他取值隔离 UNSUPPORTED_CHANNEL'}
+  - {rule_id: supported_card_types, condition: 'card_kind in [悦享年卡, 悦享卡（年）, 家庭季卡, 异业联名卡, 体验卡]', action: keep, reason_code: CARD_TYPE_KEPT, evidence: '字典列悦享卡（年）、家庭季卡、异业联名卡、体验卡；剖析：悦享年卡 8,178 张自 2023-11-15 起出现。两个卡名不合并，原样保留：小林 MSG-05493 确认月报付费会员只算悦享年卡和家庭季卡，是否同一产品待核'}
+  # ---- 去重与隔离（不能接受的记录带原因、来源和完整原记录进 quarantine）
+  - {rule_id: exact_duplicate, condition: '整行逐字段完全相同', action: deduplicate, reason_code: EXACT_DUPLICATE, evidence: '剖析：订单 336 条完全重复，全部在每 1000 条分页边界；老周 MSG-05472 确认按页拉取页间重叠。保留首条'}
+  - {rule_id: duplicate_key, condition: '主键相同但内容不同', action: quarantine, reason_code: DUPLICATE_PRIMARY_KEY, evidence: '剖析：本数据 0 条；规则保留，冲突各条都隔离，不猜哪条是对的'}
+  - {rule_id: orphan_member, condition: '订单或会员卡的 hy_id 不在已接受会员中', action: quarantine, reason_code: UNLINKED_ACCOUNT, evidence: '剖析：订单 168 条（去重后），涉及 75 个会员；老周 MSG-05470：会员注销后按规定清理资料、订单保留'}
+  - {rule_id: orphan_store, condition: '规范化后的门店编码不在门店表', action: quarantine, reason_code: UNLINKED_STORE, evidence: '剖析：规范化后本数据 0 条；规则保留以防新导出'}
+  - {rule_id: refund_exceeds_paid, condition: 'amt_rfd > amt_pay', action: quarantine, reason_code: REFUND_EXCEEDS_PAID, evidence: '剖析：84 条，均为部分退款；老周 MSG-05470：历史手工补录错误，需单独核查，不能直接改数'}
+  - {rule_id: unsupported_card_type, condition: 'card_kind 不在 supported_card_types 中（如员工卡）', action: quarantine, reason_code: UNSUPPORTED_CARD_TYPE, evidence: '剖析：员工卡 299 张字典未列、实付 0；老周 MSG-05468、05500：持卡不能判定是员工，系统无员工标识；小林无可确认依据。含义确认前隔离'}
+  - {rule_id: invalid_date, condition: '必填日期或日期时间无法解析（含不存在的日期）', action: quarantine, reason_code: INVALID_DATE, evidence: '剖析：本数据 0 条；不从订单号等其他字段推测日期'}
+  - {rule_id: invalid_money, condition: '金额不是数字或不是整分', action: quarantine, reason_code: INVALID_MONEY, evidence: '剖析：本数据 0 条；规则保留'}
+  # ---- 备注分类（只标记，不拦截）
+  - {rule_id: contact_restriction, condition: '备注含 勿打电话|勿发短信|请勿来电|不要打电话|不要发短信|别打电话', action: keep, reason_code: 触达限制, evidence: '小林 MSG-05483：勿打电话、勿发短信开头的都必须遵守，原因不影响；MSG-05485：勿扰名单和系统任一边有限制都不联系。剖析 443 个会员'}
+  - {rule_id: contact_status, condition: '备注含 联系状态|电话|微信|号码|没接|打不通|回复|信号', action: keep, reason_code: 联系状态, evidence: '小林 MSG-05483：电话暂时打不通、电话-上次没接是联系状态记录，不是限制'}
+  - {rule_id: card_note, condition: '备注含 卡务|续卡|办卡|卡费|元卡', action: keep, reason_code: 卡务, evidence: '按意思归类，非触达类别交人工审阅'}
+  - {rule_id: relationship_note, condition: '备注含 客户关系|熟客|老客户|VIP|朋友|认识|以前经常来|路过|附近上班|当班经理', action: keep, reason_code: 客户关系, evidence: '按意思归类，非触达类别交人工审阅'}
+
+raw_preservation:
+  original_files: 原始 CSV 只读，工具复制到运行目录 raw/ 逐字节保留，manifest 记录每个文件的 SHA-256；清洗结果另存 cleaned/
+  notes: member_notes 每条记 source_file、source_row（不含表头从 1 起）、source_field=tag、raw_text=tag 字段完整原值、note_text=完整一条备注原文（含标点）
+  quarantine: quarantine 每条记 record_type、source_file、source_row、reason_code、raw_json（json.dumps 完整原记录，ensure_ascii=False）

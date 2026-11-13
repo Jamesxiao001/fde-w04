@@ -1,0 +1,1978 @@
+{
+  "order_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "order_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT order_id) AS order_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "order_count"
+    ],
+    "rows": [
+      [
+        8862
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "order_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "paid_order_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "paid_order_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN status = 'paid' THEN order_id END) AS paid_order_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "paid_order_count"
+    ],
+    "rows": [
+      [
+        7414
+      ]
+    ],
+    "seconds": 0.109,
+    "units": {
+      "paid_order_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "valid_order_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "valid_order_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN status = 'paid' AND paid_cents - refund_cents > 0 THEN order_id END) AS valid_order_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "valid_order_count"
+    ],
+    "rows": [
+      [
+        6845
+      ]
+    ],
+    "seconds": 0.109,
+    "units": {
+      "valid_order_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "cancelled_order_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "cancelled_order_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN status = 'cancelled' THEN order_id END) AS cancelled_order_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "cancelled_order_count"
+    ],
+    "rows": [
+      [
+        1448
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "cancelled_order_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "refund_order_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "refund_order_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN status = 'paid' AND refund_cents > 0 THEN order_id END) AS refund_order_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "refund_order_count"
+    ],
+    "rows": [
+      [
+        1020
+      ]
+    ],
+    "seconds": 0.093,
+    "units": {
+      "refund_order_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "partial_refund_order_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "partial_refund_order_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN status = 'paid' AND refund_cents > 0 AND refund_cents < paid_cents THEN order_id END) AS partial_refund_order_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "partial_refund_order_count"
+    ],
+    "rows": [
+      [
+        451
+      ]
+    ],
+    "seconds": 0.093,
+    "units": {
+      "partial_refund_order_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "full_refund_order_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "full_refund_order_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN status = 'paid' AND paid_cents > 0 AND refund_cents = paid_cents THEN order_id END) AS full_refund_order_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "full_refund_order_count"
+    ],
+    "rows": [
+      [
+        569
+      ]
+    ],
+    "seconds": 0.11,
+    "units": {
+      "full_refund_order_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "payment_cents": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "payment_cents"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  SUM(CASE WHEN status = 'paid' THEN paid_cents ELSE 0 END) AS payment_cents\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "payment_cents"
+    ],
+    "rows": [
+      [
+        85214682
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "payment_cents": "cents"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "refund_cents": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "refund_cents"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  SUM(CASE WHEN status = 'paid' THEN refund_cents ELSE 0 END) AS refund_cents\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "refund_cents"
+    ],
+    "rows": [
+      [
+        9386877
+      ]
+    ],
+    "seconds": 0.078,
+    "units": {
+      "refund_cents": "cents"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "net_sales_cents": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "net_sales_cents"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  SUM(CASE WHEN status = 'paid' THEN paid_cents - refund_cents ELSE 0 END) AS net_sales_cents\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "net_sales_cents"
+    ],
+    "rows": [
+      [
+        75827805
+      ]
+    ],
+    "seconds": 0.078,
+    "units": {
+      "net_sales_cents": "cents"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "gross_cents": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "gross_cents"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  SUM(CASE WHEN status = 'paid' THEN gross_cents ELSE 0 END) AS gross_cents\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "gross_cents"
+    ],
+    "rows": [
+      [
+        98888453
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "gross_cents": "cents"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "discount_cents": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "discount_cents"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  SUM(CASE WHEN status = 'paid' THEN gross_cents - paid_cents ELSE 0 END) AS discount_cents\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "discount_cents"
+    ],
+    "rows": [
+      [
+        13673771
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "discount_cents": "cents"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "buyer_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "buyer_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN status = 'paid' AND paid_cents - refund_cents > 0 THEN member_id END) AS buyer_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "buyer_count"
+    ],
+    "rows": [
+      [
+        5473
+      ]
+    ],
+    "seconds": 0.078,
+    "units": {
+      "buyer_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "refund_buyer_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "refund_buyer_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN status = 'paid' AND refund_cents > 0 THEN member_id END) AS refund_buyer_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "refund_buyer_count"
+    ],
+    "rows": [
+      [
+        978
+      ]
+    ],
+    "seconds": 0.093,
+    "units": {
+      "refund_buyer_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "selling_store_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "selling_store_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN status = 'paid' AND paid_cents - refund_cents > 0 THEN store_id END) AS selling_store_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "selling_store_count"
+    ],
+    "rows": [
+      [
+        400
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "selling_store_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "valid_order_items": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "valid_order_items"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  SUM(CASE WHEN status = 'paid' AND paid_cents - refund_cents > 0 THEN quantity ELSE 0 END) AS valid_order_items\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "valid_order_items"
+    ],
+    "rows": [
+      [
+        24040
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "valid_order_items": "items"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "avg_order_value": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "avg_order_value"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  CAST(SUM(CASE WHEN status = 'paid' THEN paid_cents - refund_cents ELSE 0 END) AS DOUBLE) / CAST(NULLIF(COUNT(DISTINCT CASE WHEN status = 'paid' AND paid_cents - refund_cents > 0 THEN order_id END), 0) AS DOUBLE) AS avg_order_value\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "avg_order_value"
+    ],
+    "rows": [
+      [
+        11077.838568298028
+      ]
+    ],
+    "seconds": 0.109,
+    "units": {
+      "avg_order_value": "cents_per_order"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "avg_buyer_value": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "avg_buyer_value"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  CAST(SUM(CASE WHEN status = 'paid' THEN paid_cents - refund_cents ELSE 0 END) AS DOUBLE) / CAST(NULLIF(COUNT(DISTINCT CASE WHEN status = 'paid' AND paid_cents - refund_cents > 0 THEN member_id END), 0) AS DOUBLE) AS avg_buyer_value\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "avg_buyer_value"
+    ],
+    "rows": [
+      [
+        13854.888543760278
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "avg_buyer_value": "cents_per_member"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "purchase_frequency": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "purchase_frequency"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  CAST(COUNT(DISTINCT CASE WHEN status = 'paid' AND paid_cents - refund_cents > 0 THEN order_id END) AS DOUBLE) / CAST(NULLIF(COUNT(DISTINCT CASE WHEN status = 'paid' AND paid_cents - refund_cents > 0 THEN member_id END), 0) AS DOUBLE) AS purchase_frequency\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "purchase_frequency"
+    ],
+    "rows": [
+      [
+        1.2506851818015714
+      ]
+    ],
+    "seconds": 0.093,
+    "units": {
+      "purchase_frequency": "orders_per_member"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "refund_amount_rate": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "refund_amount_rate"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  CAST(SUM(CASE WHEN status = 'paid' THEN refund_cents ELSE 0 END) AS DOUBLE) / CAST(NULLIF(SUM(CASE WHEN status = 'paid' THEN paid_cents ELSE 0 END), 0) AS DOUBLE) AS refund_amount_rate\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "refund_amount_rate"
+    ],
+    "rows": [
+      [
+        0.11015563022343966
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "refund_amount_rate": "ratio"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "cancel_rate": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "cancel_rate"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  CAST(COUNT(DISTINCT CASE WHEN status = 'cancelled' THEN order_id END) AS DOUBLE) / CAST(NULLIF(COUNT(DISTINCT order_id), 0) AS DOUBLE) AS cancel_rate\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "cancel_rate"
+    ],
+    "rows": [
+      [
+        0.1633942676596705
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "cancel_rate": "ratio"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "refund_order_rate": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "refund_order_rate"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  CAST(COUNT(DISTINCT CASE WHEN status = 'paid' AND refund_cents > 0 THEN order_id END) AS DOUBLE) / CAST(NULLIF(COUNT(DISTINCT CASE WHEN status = 'paid' THEN order_id END), 0) AS DOUBLE) AS refund_order_rate\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "refund_order_rate"
+    ],
+    "rows": [
+      [
+        0.1375775559751821
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "refund_order_rate": "ratio"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "discount_rate": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "discount_rate"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  CAST(SUM(CASE WHEN status = 'paid' THEN gross_cents - paid_cents ELSE 0 END) AS DOUBLE) / CAST(NULLIF(SUM(CASE WHEN status = 'paid' THEN gross_cents ELSE 0 END), 0) AS DOUBLE) AS discount_rate\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "discount_rate"
+    ],
+    "rows": [
+      [
+        0.13827469826027108
+      ]
+    ],
+    "seconds": 0.11,
+    "units": {
+      "discount_rate": "ratio"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "items_per_order": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "items_per_order"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  CAST(SUM(CASE WHEN status = 'paid' AND paid_cents - refund_cents > 0 THEN quantity ELSE 0 END) AS DOUBLE) / CAST(NULLIF(COUNT(DISTINCT CASE WHEN status = 'paid' AND paid_cents - refund_cents > 0 THEN order_id END), 0) AS DOUBLE) AS items_per_order\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "items_per_order"
+    ],
+    "rows": [
+      [
+        3.5120525931336743
+      ]
+    ],
+    "seconds": 0.11,
+    "units": {
+      "items_per_order": "items_per_order"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "new_member_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "new_member_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT member_id) AS new_member_count\nFROM \"data\".\"main\".\"members\" members_src_10000\nWHERE DATE_TRUNC('day', registered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "new_member_count"
+    ],
+    "rows": [
+      [
+        3048
+      ]
+    ],
+    "seconds": 0.015,
+    "units": {
+      "new_member_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "first_buyer_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "first_buyer_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN valid_order_rank = 1 THEN member_id END) AS first_buyer_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "first_buyer_count"
+    ],
+    "rows": [
+      [
+        3362
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "first_buyer_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "first_order_sales_cents": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "first_order_sales_cents"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  SUM(CASE WHEN valid_order_rank = 1 THEN paid_cents - refund_cents ELSE 0 END) AS first_order_sales_cents\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "first_order_sales_cents"
+    ],
+    "rows": [
+      [
+        32653316
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "first_order_sales_cents": "cents"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "first_order_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "first_order_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN valid_order_rank = 1 THEN order_id END) AS first_order_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "first_order_count"
+    ],
+    "rows": [
+      [
+        3362
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "first_order_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "repeat_order_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "repeat_order_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN valid_order_rank >= 2 THEN order_id END) AS repeat_order_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "repeat_order_count"
+    ],
+    "rows": [
+      [
+        3483
+      ]
+    ],
+    "seconds": 0.094,
+    "units": {
+      "repeat_order_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "monthly_buyer_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "monthly_buyer_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT member_id) AS monthly_buyer_count\nFROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\nWHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "monthly_buyer_count"
+    ],
+    "rows": [
+      [
+        5473
+      ]
+    ],
+    "seconds": 0.109,
+    "units": {
+      "monthly_buyer_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "monthly_repeat_buyer_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "monthly_repeat_buyer_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN member_month_valid_order_count >= 2 THEN member_id END) AS monthly_repeat_buyer_count\nFROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\nWHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "monthly_repeat_buyer_count"
+    ],
+    "rows": [
+      [
+        646
+      ]
+    ],
+    "seconds": 0.125,
+    "units": {
+      "monthly_repeat_buyer_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "monthly_repeat_rate": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "monthly_repeat_rate"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  CAST(COUNT(DISTINCT CASE WHEN member_month_valid_order_count >= 2 THEN member_id END) AS DOUBLE) / CAST(NULLIF(COUNT(DISTINCT member_id), 0) AS DOUBLE) AS monthly_repeat_rate\nFROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\nWHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "monthly_repeat_rate"
+    ],
+    "rows": [
+      [
+        0.11803398501735794
+      ]
+    ],
+    "seconds": 0.109,
+    "units": {
+      "monthly_repeat_rate": "ratio"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "monthly_paid_buyer_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "monthly_paid_buyer_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN paid_eligible THEN member_id END) AS monthly_paid_buyer_count\nFROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\nWHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "monthly_paid_buyer_count"
+    ],
+    "rows": [
+      [
+        493
+      ]
+    ],
+    "seconds": 0.125,
+    "units": {
+      "monthly_paid_buyer_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "monthly_paid_order_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "monthly_paid_order_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN paid_eligible THEN order_id END) AS monthly_paid_order_count\nFROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\nWHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "monthly_paid_order_count"
+    ],
+    "rows": [
+      [
+        761
+      ]
+    ],
+    "seconds": 0.125,
+    "units": {
+      "monthly_paid_order_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "monthly_paid_sales_cents": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "monthly_paid_sales_cents"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  SUM(CASE WHEN paid_eligible THEN net_sales_cents ELSE 0 END) AS monthly_paid_sales_cents\nFROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\nWHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "monthly_paid_sales_cents"
+    ],
+    "rows": [
+      [
+        8601918
+      ]
+    ],
+    "seconds": 0.109,
+    "units": {
+      "monthly_paid_sales_cents": "cents"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "monthly_paid_repeat_buyer_count": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "monthly_paid_repeat_buyer_count"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN paid_eligible AND member_month_valid_order_count >= 2 THEN member_id END) AS monthly_paid_repeat_buyer_count\nFROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\nWHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "monthly_paid_repeat_buyer_count"
+    ],
+    "rows": [
+      [
+        115
+      ]
+    ],
+    "seconds": 0.109,
+    "units": {
+      "monthly_paid_repeat_buyer_count": "count"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "monthly_paid_repeat_rate": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "monthly_paid_repeat_rate"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  CAST(COUNT(DISTINCT CASE WHEN paid_eligible AND member_month_valid_order_count >= 2 THEN member_id END) AS DOUBLE) / CAST(NULLIF(COUNT(DISTINCT CASE WHEN paid_eligible THEN member_id END), 0) AS DOUBLE) AS monthly_paid_repeat_rate\nFROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\nWHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "monthly_paid_repeat_rate"
+    ],
+    "rows": [
+      [
+        0.2332657200811359
+      ]
+    ],
+    "seconds": 0.125,
+    "units": {
+      "monthly_paid_repeat_rate": "ratio"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  },
+  "monthly_paid_avg_order_value": {
+    "status": "ok",
+    "intent": {
+      "metrics": [
+        "monthly_paid_avg_order_value"
+      ],
+      "start": "2026-08-01",
+      "end": "2026-09-01",
+      "group_by": [],
+      "filters": []
+    },
+    "sql": "SELECT\n  CAST(SUM(CASE WHEN paid_eligible THEN net_sales_cents ELSE 0 END) AS DOUBLE) / CAST(NULLIF(COUNT(DISTINCT CASE WHEN paid_eligible THEN order_id END), 0) AS DOUBLE) AS monthly_paid_avg_order_value\nFROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\nWHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2026-08-01' AND '2026-08-31'",
+    "columns": [
+      "monthly_paid_avg_order_value"
+    ],
+    "rows": [
+      [
+        11303.440210249672
+      ]
+    ],
+    "seconds": 0.125,
+    "units": {
+      "monthly_paid_avg_order_value": "cents_per_order"
+    },
+    "data_version": "qinghe-w04-v1.1",
+    "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+    "catalog_sha256": "2d0f316b286de6e5958ff9d5c09e21fc8bf0ca11e598484f9526f1960c9ddaff",
+    "coverage_notes": {
+      "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+      "time_range": {
+        "start": "2024-09-01",
+        "end_exclusive": "2026-09-01"
+      },
+      "quarantined": {
+        "member": 0,
+        "order": 252,
+        "card": 299,
+        "shop": 0
+      },
+      "quarantine_reasons": {
+        "card:UNSUPPORTED_CARD_TYPE": 299,
+        "order:REFUND_EXCEEDS_PAID": 84,
+        "order:UNLINKED_ACCOUNT": 168
+      },
+      "deduplicated": {
+        "member": 0,
+        "order": 336,
+        "card": 0,
+        "shop": 0
+      }
+    }
+  }
+}

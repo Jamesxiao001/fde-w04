@@ -1,0 +1,626 @@
+{
+  "contract_version": "w04-0.3.0",
+  "selected_chain": "复购趋势核查：在新 CRM 覆盖期内看月内复购率、月末付费会员复购率和覆盖期首购，结论限定在已纳入数据范围",
+  "data_version": "qinghe-w04-v1.1",
+  "query_library_version": "558fbaf5bed149ae6f21e43424f14a432fe82e75d95d551aa9c67b2ad41e86d0",
+  "runs": [
+    {
+      "question": "2026年8月的月内复购率是多少？",
+      "agent_answer": "2026年8月月内复购率为11.80%。口径为同一自然月内复购的会员账户数除以该月有购买的会员账户数，按整月、全门店统计，统计单位为CRM会员账户。该结果基于青禾当前已加载数据；门店老收银系统的会员消费未导出，已注销会员相关订单及员工卡按规则隔离未纳入，未覆盖部分不能视为0。",
+      "query_status": "executed",
+      "actual_queries": [
+        {
+          "sql": "SELECT\n  CAST(COUNT(DISTINCT CASE WHEN member_month_valid_order_count >= 2 THEN member_id END) AS DOUBLE) / CAST(NULLIF(COUNT(DISTINCT member_id), 0) AS DOUBLE) AS monthly_repeat_rate\nFROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\nWHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2026-08-01' AND '2026-08-31'",
+          "result": {
+            "status": "ok",
+            "intent": {
+              "metrics": [
+                "monthly_repeat_rate"
+              ],
+              "start": "2026-08-01",
+              "end": "2026-09-01",
+              "group_by": [],
+              "filters": []
+            },
+            "sql": "SELECT\n  CAST(COUNT(DISTINCT CASE WHEN member_month_valid_order_count >= 2 THEN member_id END) AS DOUBLE) / CAST(NULLIF(COUNT(DISTINCT member_id), 0) AS DOUBLE) AS monthly_repeat_rate\nFROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\nWHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2026-08-01' AND '2026-08-31'",
+            "columns": [
+              "monthly_repeat_rate"
+            ],
+            "rows": [
+              [
+                0.11803398501735794
+              ]
+            ],
+            "seconds": 0.125,
+            "units": {
+              "monthly_repeat_rate": "ratio"
+            },
+            "data_version": "qinghe-w04-v1.1",
+            "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+            "catalog_sha256": "558fbaf5bed149ae6f21e43424f14a432fe82e75d95d551aa9c67b2ad41e86d0",
+            "coverage_notes": {
+              "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+              "time_range": {
+                "start": "2024-09-01",
+                "end_exclusive": "2026-09-01"
+              },
+              "quarantined": {
+                "member": 0,
+                "order": 252,
+                "card": 299,
+                "shop": 0
+              },
+              "quarantine_reasons": {
+                "card:UNSUPPORTED_CARD_TYPE": 299,
+                "order:REFUND_EXCEEDS_PAID": 84,
+                "order:UNLINKED_ACCOUNT": 168
+              },
+              "deduplicated": {
+                "member": 0,
+                "order": 336,
+                "card": 0,
+                "shop": 0
+              }
+            }
+          },
+          "error": null
+        }
+      ],
+      "coverage_notes": {
+        "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+        "time_range": {
+          "start": "2024-09-01",
+          "end_exclusive": "2026-09-01"
+        },
+        "quarantined": {
+          "member": 0,
+          "order": 252,
+          "card": 299,
+          "shop": 0
+        },
+        "quarantine_reasons": {
+          "card:UNSUPPORTED_CARD_TYPE": 299,
+          "order:REFUND_EXCEEDS_PAID": 84,
+          "order:UNLINKED_ACCOUNT": 168
+        },
+        "deduplicated": {
+          "member": 0,
+          "order": 336,
+          "card": 0,
+          "shop": 0
+        }
+      },
+      "bad_case": false,
+      "bad_case_reason": ""
+    },
+    {
+      "question": "2025年9月到2026年8月，每个月的月内复购率分别是多少？",
+      "agent_answer": "统计范围为2025年9月至2026年8月，共12个完整自然月；按自然月分别计算月内复购率，口径为“同一自然月内复购的会员账户数 ÷ 该月有购买的会员账户数”，采用全门店口径。各月结果如下：2025年9月16.73%，10月15.96%，11月15.33%，12月15.12%；2026年1月14.60%，2月14.08%，3月14.27%，4月14.37%，5月13.04%，6月12.93%，7月11.37%，8月11.80%。限制说明：本次仅覆盖新CRM导出的会员、订单、会员卡和门店数据；门店老收银系统的会员消费未导出，已注销会员的订单无法关联、已隔离未纳入，因此未覆盖部分不能视为0。",
+      "query_status": "executed",
+      "actual_queries": [
+        {
+          "sql": "SELECT\n  metric_time__month\n  , CAST(monthly_repeat_buyer_count AS DOUBLE) / CAST(NULLIF(monthly_buyer_count, 0) AS DOUBLE) AS monthly_repeat_rate\nFROM (\n  SELECT\n    metric_time__month\n    , COUNT(DISTINCT __monthly_repeat_buyer_count) AS monthly_repeat_buyer_count\n    , COUNT(DISTINCT __monthly_buyer_count) AS monthly_buyer_count\n  FROM (\n    SELECT\n      DATE_TRUNC('month', stat_period_start) AS metric_time__month\n      , member_id AS __monthly_buyer_count\n      , CASE WHEN member_month_valid_order_count >= 2 THEN member_id END AS __monthly_repeat_buyer_count\n    FROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\n    WHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2025-09-01' AND '2026-08-31'\n  ) subq_6\n  GROUP BY\n    metric_time__month\n) subq_8",
+          "result": {
+            "status": "ok",
+            "intent": {
+              "metrics": [
+                "monthly_repeat_rate"
+              ],
+              "start": "2025-09-01",
+              "end": "2026-09-01",
+              "group_by": [
+                "metric_time__month"
+              ],
+              "filters": []
+            },
+            "sql": "SELECT\n  metric_time__month\n  , CAST(monthly_repeat_buyer_count AS DOUBLE) / CAST(NULLIF(monthly_buyer_count, 0) AS DOUBLE) AS monthly_repeat_rate\nFROM (\n  SELECT\n    metric_time__month\n    , COUNT(DISTINCT __monthly_repeat_buyer_count) AS monthly_repeat_buyer_count\n    , COUNT(DISTINCT __monthly_buyer_count) AS monthly_buyer_count\n  FROM (\n    SELECT\n      DATE_TRUNC('month', stat_period_start) AS metric_time__month\n      , member_id AS __monthly_buyer_count\n      , CASE WHEN member_month_valid_order_count >= 2 THEN member_id END AS __monthly_repeat_buyer_count\n    FROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\n    WHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2025-09-01' AND '2026-08-31'\n  ) subq_6\n  GROUP BY\n    metric_time__month\n) subq_8",
+            "columns": [
+              "metric_time__month",
+              "monthly_repeat_rate"
+            ],
+            "rows": [
+              [
+                "2026-08-01 00:00:00",
+                0.11803398501735794
+              ],
+              [
+                "2025-11-01 00:00:00",
+                0.1533457249070632
+              ],
+              [
+                "2026-04-01 00:00:00",
+                0.1436943781202518
+              ],
+              [
+                "2025-10-01 00:00:00",
+                0.15957978989494748
+              ],
+              [
+                "2026-05-01 00:00:00",
+                0.13044342811692186
+              ],
+              [
+                "2025-12-01 00:00:00",
+                0.15120113047574188
+              ],
+              [
+                "2026-07-01 00:00:00",
+                0.1136986301369863
+              ],
+              [
+                "2026-03-01 00:00:00",
+                0.1427061310782241
+              ],
+              [
+                "2025-09-01 00:00:00",
+                0.16725978647686832
+              ],
+              [
+                "2026-06-01 00:00:00",
+                0.12929593163663386
+              ],
+              [
+                "2026-01-01 00:00:00",
+                0.14604966139954853
+              ],
+              [
+                "2026-02-01 00:00:00",
+                0.14084223252065284
+              ]
+            ],
+            "seconds": 0.156,
+            "units": {
+              "monthly_repeat_rate": "ratio"
+            },
+            "data_version": "qinghe-w04-v1.1",
+            "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+            "catalog_sha256": "558fbaf5bed149ae6f21e43424f14a432fe82e75d95d551aa9c67b2ad41e86d0",
+            "coverage_notes": {
+              "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+              "time_range": {
+                "start": "2024-09-01",
+                "end_exclusive": "2026-09-01"
+              },
+              "quarantined": {
+                "member": 0,
+                "order": 252,
+                "card": 299,
+                "shop": 0
+              },
+              "quarantine_reasons": {
+                "card:UNSUPPORTED_CARD_TYPE": 299,
+                "order:REFUND_EXCEEDS_PAID": 84,
+                "order:UNLINKED_ACCOUNT": 168
+              },
+              "deduplicated": {
+                "member": 0,
+                "order": 336,
+                "card": 0,
+                "shop": 0
+              }
+            }
+          },
+          "error": null
+        }
+      ],
+      "coverage_notes": {
+        "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+        "time_range": {
+          "start": "2024-09-01",
+          "end_exclusive": "2026-09-01"
+        },
+        "quarantined": {
+          "member": 0,
+          "order": 252,
+          "card": 299,
+          "shop": 0
+        },
+        "quarantine_reasons": {
+          "card:UNSUPPORTED_CARD_TYPE": 299,
+          "order:REFUND_EXCEEDS_PAID": 84,
+          "order:UNLINKED_ACCOUNT": 168
+        },
+        "deduplicated": {
+          "member": 0,
+          "order": 336,
+          "card": 0,
+          "shop": 0
+        }
+      },
+      "bad_case": false,
+      "bad_case_reason": ""
+    },
+    {
+      "question": "2026年8月月末付费会员的复购率是多少？",
+      "agent_answer": "2026年8月月末付费会员复购率为23.33%。统计范围为青禾 CRM 会员账户在2026年8月完整自然月、全渠道全门店口径下的结果。口径为：按8月月末最后一天判断付费会员资格，账户名下至少有一张悦享年卡或家庭季卡有效即计入，同一账户多张有效卡不重复计人；再统计这些账户在当月全渠道、全门店有效订单中的购买人数与复购人数，复购人数占购买人数的比例为该指标。限制：本次仅使用新 CRM 导出数据，门店老收银系统的会员消费未导出，已注销会员的相关订单无法关联而未纳入，员工卡已隔离，工作账仅用于核对未导入；未覆盖部分不能当作零。",
+      "query_status": "executed",
+      "actual_queries": [
+        {
+          "sql": "SELECT\n  CAST(COUNT(DISTINCT CASE WHEN paid_eligible AND member_month_valid_order_count >= 2 THEN member_id END) AS DOUBLE) / CAST(NULLIF(COUNT(DISTINCT CASE WHEN paid_eligible THEN member_id END), 0) AS DOUBLE) AS monthly_paid_repeat_rate\nFROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\nWHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2026-08-01' AND '2026-08-31'",
+          "result": {
+            "status": "ok",
+            "intent": {
+              "metrics": [
+                "monthly_paid_repeat_rate"
+              ],
+              "start": "2026-08-01",
+              "end": "2026-09-01",
+              "group_by": [],
+              "filters": []
+            },
+            "sql": "SELECT\n  CAST(COUNT(DISTINCT CASE WHEN paid_eligible AND member_month_valid_order_count >= 2 THEN member_id END) AS DOUBLE) / CAST(NULLIF(COUNT(DISTINCT CASE WHEN paid_eligible THEN member_id END), 0) AS DOUBLE) AS monthly_paid_repeat_rate\nFROM \"data\".\"main\".\"valid_order_month_facts\" valid_order_month_facts_src_10000\nWHERE DATE_TRUNC('day', stat_period_start) BETWEEN '2026-08-01' AND '2026-08-31'",
+            "columns": [
+              "monthly_paid_repeat_rate"
+            ],
+            "rows": [
+              [
+                0.2332657200811359
+              ]
+            ],
+            "seconds": 0.125,
+            "units": {
+              "monthly_paid_repeat_rate": "ratio"
+            },
+            "data_version": "qinghe-w04-v1.1",
+            "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+            "catalog_sha256": "558fbaf5bed149ae6f21e43424f14a432fe82e75d95d551aa9c67b2ad41e86d0",
+            "coverage_notes": {
+              "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+              "time_range": {
+                "start": "2024-09-01",
+                "end_exclusive": "2026-09-01"
+              },
+              "quarantined": {
+                "member": 0,
+                "order": 252,
+                "card": 299,
+                "shop": 0
+              },
+              "quarantine_reasons": {
+                "card:UNSUPPORTED_CARD_TYPE": 299,
+                "order:REFUND_EXCEEDS_PAID": 84,
+                "order:UNLINKED_ACCOUNT": 168
+              },
+              "deduplicated": {
+                "member": 0,
+                "order": 336,
+                "card": 0,
+                "shop": 0
+              }
+            }
+          },
+          "error": null
+        }
+      ],
+      "coverage_notes": {
+        "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+        "time_range": {
+          "start": "2024-09-01",
+          "end_exclusive": "2026-09-01"
+        },
+        "quarantined": {
+          "member": 0,
+          "order": 252,
+          "card": 299,
+          "shop": 0
+        },
+        "quarantine_reasons": {
+          "card:UNSUPPORTED_CARD_TYPE": 299,
+          "order:REFUND_EXCEEDS_PAID": 84,
+          "order:UNLINKED_ACCOUNT": 168
+        },
+        "deduplicated": {
+          "member": 0,
+          "order": 336,
+          "card": 0,
+          "shop": 0
+        }
+      },
+      "bad_case": false,
+      "bad_case_reason": ""
+    },
+    {
+      "question": "2025年7月到2026年6月这四个季度，青禾会员的复购率是不是连续下滑？",
+      "agent_answer": "现有复购率指标仅支持完整自然月、全门店口径，不能按季度汇总，因此无法直接判断2025年7月到2026年6月四个季度是否连续下滑；可按月展示月内复购率。",
+      "query_status": "not_executed",
+      "actual_queries": [],
+      "coverage_notes": {
+        "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+        "time_range": {
+          "start": "2024-09-01",
+          "end_exclusive": "2026-09-01"
+        },
+        "quarantined": {
+          "member": 0,
+          "order": 252,
+          "card": 299,
+          "shop": 0
+        },
+        "quarantine_reasons": {
+          "card:UNSUPPORTED_CARD_TYPE": 299,
+          "order:REFUND_EXCEEDS_PAID": 84,
+          "order:UNLINKED_ACCOUNT": 168
+        },
+        "deduplicated": {
+          "member": 0,
+          "order": 336,
+          "card": 0,
+          "shop": 0
+        }
+      },
+      "bad_case": true,
+      "bad_case_reason": "一律拒答：指标库只有完整自然月口径，问四个季度时直接返回 unsupported；按月展开（run-02 已证明可答）本可在覆盖范围内给出有限定的回答，并说明不能合并成季度值。未调优，下一步在 catalog 约束或 Harness 策略中处理季度问题按月展开。"
+    },
+    {
+      "question": "2026年8月有多少会员是第一次在青禾购买？",
+      "agent_answer": "2026年8月，青禾在统计覆盖期内首次产生有效订单的CRM会员账户共3362个。该“首次”仅指本数据覆盖期内（新CRM订单自2024年9月1日起）的首次购买，不代表终身首次购买；门店老收银系统的会员消费未导出，已注销会员的相关订单也无法关联、未纳入统计，因此未覆盖部分不能视为零。",
+      "query_status": "executed",
+      "actual_queries": [
+        {
+          "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN valid_order_rank = 1 THEN member_id END) AS first_buyer_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+          "result": {
+            "status": "ok",
+            "intent": {
+              "metrics": [
+                "first_buyer_count"
+              ],
+              "start": "2026-08-01",
+              "end": "2026-09-01",
+              "group_by": [],
+              "filters": []
+            },
+            "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN valid_order_rank = 1 THEN member_id END) AS first_buyer_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+            "columns": [
+              "first_buyer_count"
+            ],
+            "rows": [
+              [
+                3362
+              ]
+            ],
+            "seconds": 0.094,
+            "units": {
+              "first_buyer_count": "count"
+            },
+            "data_version": "qinghe-w04-v1.1",
+            "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+            "catalog_sha256": "558fbaf5bed149ae6f21e43424f14a432fe82e75d95d551aa9c67b2ad41e86d0",
+            "coverage_notes": {
+              "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+              "time_range": {
+                "start": "2024-09-01",
+                "end_exclusive": "2026-09-01"
+              },
+              "quarantined": {
+                "member": 0,
+                "order": 252,
+                "card": 299,
+                "shop": 0
+              },
+              "quarantine_reasons": {
+                "card:UNSUPPORTED_CARD_TYPE": 299,
+                "order:REFUND_EXCEEDS_PAID": 84,
+                "order:UNLINKED_ACCOUNT": 168
+              },
+              "deduplicated": {
+                "member": 0,
+                "order": 336,
+                "card": 0,
+                "shop": 0
+              }
+            }
+          },
+          "error": null
+        }
+      ],
+      "coverage_notes": {
+        "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+        "time_range": {
+          "start": "2024-09-01",
+          "end_exclusive": "2026-09-01"
+        },
+        "quarantined": {
+          "member": 0,
+          "order": 252,
+          "card": 299,
+          "shop": 0
+        },
+        "quarantine_reasons": {
+          "card:UNSUPPORTED_CARD_TYPE": 299,
+          "order:REFUND_EXCEEDS_PAID": 84,
+          "order:UNLINKED_ACCOUNT": 168
+        },
+        "deduplicated": {
+          "member": 0,
+          "order": 336,
+          "card": 0,
+          "shop": 0
+        }
+      },
+      "bad_case": false,
+      "bad_case_reason": "非 bad case，作为波动证据保留：这次运行时 customer/w04/answer_prompt.txt 与默认提示词完全相同（追加规则的命令因 PowerShell 中文弯引号报错未生效），等同 run-04 同题同配置原样重跑；这次没有出现“测试”字样并写出 2024-09-01，说明 run-04 的问题不是每次出现，run-04 对 run-07 的对照不能证明稳定性。首句仍先给数字。"
+    },
+    {
+      "question": "2026年8月有多少会员是第一次在青禾购买？",
+      "agent_answer": "按新 CRM 自 2024 年 9 月 1 日起已纳入的订单，2026 年 8 月青禾覆盖期内首次购买的 CRM 会员账户为 3362 个。这里的“第一次”仅指该覆盖期内首次，不是终身首次；统计单位为 CRM 会员账户，未按门店或其他维度拆分。限制是：门店老收银系统的会员消费未导出；已注销会员资料清理后其订单无法关联，已隔离未纳入；另有退款超过实付等异常订单共 252 笔未纳入，员工卡 299 条也已隔离，未覆盖部分不能当作 0。",
+      "query_status": "executed",
+      "actual_queries": [
+        {
+          "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN valid_order_rank = 1 THEN member_id END) AS first_buyer_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+          "result": {
+            "status": "ok",
+            "intent": {
+              "metrics": [
+                "first_buyer_count"
+              ],
+              "start": "2026-08-01",
+              "end": "2026-09-01",
+              "group_by": [],
+              "filters": []
+            },
+            "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN valid_order_rank = 1 THEN member_id END) AS first_buyer_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+            "columns": [
+              "first_buyer_count"
+            ],
+            "rows": [
+              [
+                3362
+              ]
+            ],
+            "seconds": 0.109,
+            "units": {
+              "first_buyer_count": "count"
+            },
+            "data_version": "qinghe-w04-v1.1",
+            "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+            "catalog_sha256": "558fbaf5bed149ae6f21e43424f14a432fe82e75d95d551aa9c67b2ad41e86d0",
+            "coverage_notes": {
+              "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+              "time_range": {
+                "start": "2024-09-01",
+                "end_exclusive": "2026-09-01"
+              },
+              "quarantined": {
+                "member": 0,
+                "order": 252,
+                "card": 299,
+                "shop": 0
+              },
+              "quarantine_reasons": {
+                "card:UNSUPPORTED_CARD_TYPE": 299,
+                "order:REFUND_EXCEEDS_PAID": 84,
+                "order:UNLINKED_ACCOUNT": 168
+              },
+              "deduplicated": {
+                "member": 0,
+                "order": 336,
+                "card": 0,
+                "shop": 0
+              }
+            }
+          },
+          "error": null
+        }
+      ],
+      "coverage_notes": {
+        "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+        "time_range": {
+          "start": "2024-09-01",
+          "end_exclusive": "2026-09-01"
+        },
+        "quarantined": {
+          "member": 0,
+          "order": 252,
+          "card": 299,
+          "shop": 0
+        },
+        "quarantine_reasons": {
+          "card:UNSUPPORTED_CARD_TYPE": 299,
+          "order:REFUND_EXCEEDS_PAID": 84,
+          "order:UNLINKED_ACCOUNT": 168
+        },
+        "deduplicated": {
+          "member": 0,
+          "order": 336,
+          "card": 0,
+          "shop": 0
+        }
+      },
+      "bad_case": true,
+      "bad_case_reason": "调优目标已改善（首句先限定新 CRM 2024-09-01 起的范围，不再称测试数据，说明不是终身首次），但新出现越界：把整批隔离的 252 笔订单说成本次统计未纳入，且用“另有”与已说的注销会员订单重复计算；252 是 24 个月整批数量，不能直接对应 2026 年 8 月。",
+      "tuning": {
+        "before": {
+          "agent_answer": "2026年8月，在青禾当前客户数据范围内，首次购买会员账户数为 3362 个。该口径统计的是测试覆盖期内首次有效订单落在2026年8月的CRM会员账户，并非终身首次购买；老收银系统的会员消费未导出，已注销会员无法关联的订单也已隔离未纳入。结果未按门店或地区拆分。",
+          "query_status": "executed",
+          "actual_queries": [
+            {
+              "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN valid_order_rank = 1 THEN member_id END) AS first_buyer_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+              "result": {
+                "status": "ok",
+                "intent": {
+                  "metrics": [
+                    "first_buyer_count"
+                  ],
+                  "start": "2026-08-01",
+                  "end": "2026-09-01",
+                  "group_by": [],
+                  "filters": []
+                },
+                "sql": "SELECT\n  COUNT(DISTINCT CASE WHEN valid_order_rank = 1 THEN member_id END) AS first_buyer_count\nFROM \"data\".\"main\".\"order_facts\" order_facts_src_10000\nWHERE DATE_TRUNC('day', ordered_at) BETWEEN '2026-08-01' AND '2026-08-31'",
+                "columns": [
+                  "first_buyer_count"
+                ],
+                "rows": [
+                  [
+                    3362
+                  ]
+                ],
+                "seconds": 0.094,
+                "units": {
+                  "first_buyer_count": "count"
+                },
+                "data_version": "qinghe-w04-v1.1",
+                "data_sha256": "ab6cad6beb9cecaf853efd29a3827692ce7cca1c95d04bb760f178821425ae41",
+                "catalog_sha256": "558fbaf5bed149ae6f21e43424f14a432fe82e75d95d551aa9c67b2ad41e86d0",
+                "coverage_notes": {
+                  "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+                  "time_range": {
+                    "start": "2024-09-01",
+                    "end_exclusive": "2026-09-01"
+                  },
+                  "quarantined": {
+                    "member": 0,
+                    "order": 252,
+                    "card": 299,
+                    "shop": 0
+                  },
+                  "quarantine_reasons": {
+                    "card:UNSUPPORTED_CARD_TYPE": 299,
+                    "order:REFUND_EXCEEDS_PAID": 84,
+                    "order:UNLINKED_ACCOUNT": 168
+                  },
+                  "deduplicated": {
+                    "member": 0,
+                    "order": 336,
+                    "card": 0,
+                    "shop": 0
+                  }
+                }
+              },
+              "error": null
+            }
+          ],
+          "coverage_notes": {
+            "source": "本次只含新 CRM 导出的会员、订单、会员卡、门店 4 个文件；门店老收银系统的会员消费未导出（老周 MSG-05458、05502）；已注销会员资料按规定清理，其订单无法关联、已隔离未纳入（MSG-05470）；导出中没有员工身份数据，员工卡已隔离（MSG-05500）；小林工作账只用于核对，未导入。未覆盖部分是不知道，不能当作 0。",
+            "time_range": {
+              "start": "2024-09-01",
+              "end_exclusive": "2026-09-01"
+            },
+            "quarantined": {
+              "member": 0,
+              "order": 252,
+              "card": 299,
+              "shop": 0
+            },
+            "quarantine_reasons": {
+              "card:UNSUPPORTED_CARD_TYPE": 299,
+              "order:REFUND_EXCEEDS_PAID": 84,
+              "order:UNLINKED_ACCOUNT": 168
+            },
+            "deduplicated": {
+              "member": 0,
+              "order": 336,
+              "card": 0,
+              "shop": 0
+            }
+          },
+          "bad_case": true,
+          "bad_case_reason": "数字 3362 正确并说明非终身首购，但把客户真实数据称为“测试覆盖期”，且首句先给数字、范围放在后面，截取首句会被读成 8 月有 3362 个新客。"
+        },
+        "change_location": "提示词／上下文",
+        "change": "复制 product/w03_answer_prompt.txt 为 customer/w04/answer_prompt.txt，只在末尾追加一条：本次是客户新 CRM 真实导出、不称测试数据；回答第一句先限定范围（按新 CRM 自 2024-09-01 起已纳入的订单）再给数字；首购、首单、后续购买在同一句说明是覆盖期内首次；随后说明未导出和已隔离部分。查询、SQL、指标库均未改。",
+        "reason": "run-04 的数字与 SQL 正确，问题出在生成回答时如何使用覆盖信息：默认提示词写“data_context 指明本次测试数据版本”，catalog 保留的 W03 来源引文也写“测试覆盖期”；补事实已在覆盖说明中，需要的是要求模型把范围放到结论开头。规则对所有指标通用，不针对单题。"
+      }
+    }
+  ]
+}
